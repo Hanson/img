@@ -11,9 +11,35 @@ class UploadController extends Controller
 
     public function upload(Request $request)
     {
+        $validator = \Validator::make($request->all(), [
+            'file' => 'required|image|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->fail($validator->errors()->first());
+        }
+
         $weibo = new Client();
+
         /** @var UploadedFile $file */
         $file = $request->file;
-        return $weibo->upload(fopen($file->getRealPath(), 'r'), config('services.weibo.username'), config('services.weibo.password'));
+
+        try {
+            $url = $weibo->upload(fopen($file->getRealPath(), 'r'), config('services.weibo.username'), config('services.weibo.password'));
+
+            return $this->success($url);
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage());
+        }
+    }
+
+    public function success($data = [], $code = 200)
+    {
+        return ['code' => $code, 'data' => $data];
+    }
+
+    public function fail($data = [], $code = 500)
+    {
+        return ['code' => $code, 'data' => $data];
     }
 }
