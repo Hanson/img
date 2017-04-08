@@ -32,5 +32,6 @@ composer install
 ## Relevant Package
 
 [laravel-base-project](https://github.com/HanSon/base-laravel-project) 基于最新版的 laravel 项目，自带一些常用的开发包
+
 [weibo_image_uploader](https://github.com/consatan/weibo_image_uploader/) 微博图床上传包
 
