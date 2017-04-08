@@ -99,7 +99,6 @@
         var vm = new Vue({
             el: '#container',
             data: {
-//                isDrop: false,
                 form: null,
                 url: null,
                 text: null

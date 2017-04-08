@@ -52,8 +52,8 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        <li><a href="https://github.com/HanSon/img">Github</a></li>
-                        <li><a href="http://hanc.cc">HanSon's Blog</a></li>
+                        <li><a target="_blank" href="https://github.com/HanSon/img">Github</a></li>
+                        <li><a target="_blank" href="http://hanc.cc">HanSon's Blog</a></li>
                     </ul>
                 </div>
             </div>
