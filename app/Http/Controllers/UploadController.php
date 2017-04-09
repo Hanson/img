@@ -8,11 +8,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadController extends Controller
 {
-
     public function upload(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'file' => 'required|image|max:2048'
+            'file' => 'required|image'
         ]);
 
         if ($validator->fails()) {

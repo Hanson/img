@@ -5,17 +5,22 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="jumbotron" id="dropbox" style="border:2px dashed silver;">
-                    <h3>拖拽图片到这里上传</h3>
-                    <p style="font-size: 16px">或者</p>
-                    <p><a href="javascript:;" class="btn btn-primary btn-sm" v-on:click="selectFile">选择文件</a></p>
-                    <form id="form" style="visibility: hidden" v-on:change="changeFile"><input type="file" name="file">
-                    </form>
+                    <div v-show="!isUploading">
+                        <h3>拖拽图片到这里上传</h3>
+                        <p style="font-size: 16px">或者</p>
+                        <p><a href="javascript:;" class="btn btn-primary btn-sm" v-on:click="selectFile">选择文件</a></p>
+                        <form id="form" style="visibility: hidden" v-on:change="changeFile"><input type="file" name="file">
+                        </form>
+                    </div>
+                    <div v-show="isUploading">
+                        <h2>上传中...</h2>
+                    </div>
                 </div>
                 <form class="form-inline">
                     <div v-show="url" class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">url</div>
-                            <input id="url" type="text" class="form-control" v-model="text" placeholder="上传成功后的链接"
+                            <input id="url" type="text" class="form-control" v-model="url" placeholder="上传成功后的链接"
                                    style="width: 400px;">
                             <div class="input-group-addon">
                                 <img class="clip" width="13" data-clipboard-target="#url" src="images/clippy.svg"
@@ -75,8 +80,8 @@
 
                 //拖拉图片到浏览器，可以实现预览功能
                 var filesize = Math.floor((fileList[0].size) / 1024);
-                if(filesize>2048){
-                    alert("上传大小不能超过2M.");
+                if(filesize>5096){
+                    alert("上传大小不能超过5M.");
                     return false;
                 }
                 vm.form = new FormData();
@@ -104,7 +109,8 @@
             data: {
                 form: null,
                 url: null,
-                text: null
+                text: null,
+                isUploading: false
             },
             methods: {
                 selectFile: function () {
@@ -118,23 +124,25 @@
                     }
                 },
                 upload: function () {
+                    this.isUploading = true;
                     $("#form").submit();
                 },
             },
             mounted: function () {
                 new Clipboard('.clip');
                 $('#form').submit(function (e) {
-                    vm.text = '上传中...';
                     vm.url = null;
                     axios.post('/api/upload', vm.form).then(function (response) {
                         var data = response.data;
                         if (data.code === 200) {
-                            vm.text = vm.url = data.data;
+                            vm.url = data.data;
                         } else {
                             alert(data.data);
                         }
+                        vm.isUploading = false;
                     }).catch(function (error) {
                         alert(error);
+                        vm.isUploading = false;
                     });
                     e.preventDefault();
                 })

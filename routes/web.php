@@ -12,4 +12,3 @@
 */
 
 Route::get('/', 'HomeController@index');
-
