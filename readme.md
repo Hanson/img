@@ -16,6 +16,7 @@ Img 是基于微博的图床
 ## Install
 
 1. composer
+
 `composer create-project --prefer-dist hanson/img:dev-master project`
 
 2. git
