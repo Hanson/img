@@ -9,7 +9,8 @@
                         <h3>拖拽图片到这里上传</h3>
                         <p style="font-size: 16px">或者</p>
                         <p><a href="javascript:;" class="btn btn-primary btn-sm" v-on:click="selectFile">选择文件</a></p>
-                        <form id="form" style="visibility: hidden" v-on:change="changeFile"><input type="file" name="file">
+                        <form id="form" style="visibility: hidden" v-on:change="changeFile">
+                            <input type="file" name="file" accept="image/*">
                         </form>
                     </div>
                     <div v-show="isUploading">
@@ -77,13 +78,6 @@
                     alert("您拖的不是图片！");
                     return false;
                 }
-
-                //拖拉图片到浏览器，可以实现预览功能
-                var filesize = Math.floor((fileList[0].size) / 1024);
-                if(filesize>5096){
-                    alert("上传大小不能超过5M.");
-                    return false;
-                }
                 vm.form = new FormData();
                 vm.form.append('file', fileList[0]);
                 console.log(form);
@@ -125,6 +119,10 @@
                 },
                 upload: function () {
                     this.isUploading = true;
+                    if(this.form.get('file').size > 5 * 1024 * 1024){
+                        alert("上传大小不能超过5M.");
+                        return false;
+                    }
                     $("#form").submit();
                 },
             },
