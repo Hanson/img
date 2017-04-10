@@ -26,9 +26,7 @@ cd img
 composer install
 ```
 
-在 `.env` 中配置 `WEIBO_USERNAME` 和 `WEIBO_PASSWORD` ，分别为个人的微博账号密码
-
-然后运行 `php artisan serve` 访问 http://localhost:8000 即可
+运行 `php artisan serve` 访问 http://localhost:8000 即可
 
 ## Relevant Package
 
