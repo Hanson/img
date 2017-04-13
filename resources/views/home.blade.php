@@ -118,11 +118,11 @@
                     }
                 },
                 upload: function () {
-                    this.isUploading = true;
                     if(this.form.get('file').size > 5 * 1024 * 1024){
                         alert("上传大小不能超过5M.");
                         return false;
                     }
+                    this.isUploading = true;
                     $("#form").submit();
                 },
             },
