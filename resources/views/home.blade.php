@@ -22,7 +22,7 @@
                         <div class="input-group">
                             <div class="input-group-addon">url</div>
                             <input id="url" type="text" class="form-control" v-model="url" placeholder="上传成功后的链接"
-                                   style="width: 400px;">
+                                   style="width: 250px;">
                             <div class="input-group-addon">
                                 <img class="clip" width="13" data-clipboard-target="#url" src="images/clippy.svg"
                                      alt="Copy to clipboard">
@@ -34,8 +34,18 @@
                            :data-clipboard-text="'![](' + url + ')'">复制 markdown</a>
                     </div>
                     <a v-show="url" class="btn btn-default" target="_blank" :href="url">新窗口打开</a>
+                    <select v-show="url" class="form-control" @change="faceSelect" v-model="faceType">
+                        <option value="" selected="selected">选择颜值检测</option>
+                        <option value="score">颜值分数</option>
+                        <option value="bill">请吃饭</option>
+                        <option value="popular">最受欢迎</option>
+                        <option value="relation">测关系</option>
+                        <option value="clothing">穿衣风格</option>
+                        <option value="poem">对图赋诗</option>
+                    </select>
                 </form>
-                <div id="preview"><img :src="url" v-show="url" style="max-width: 750px;"></div>
+                <div class="alert alert-success" role="alert" v-show="faceText" style="white-space: pre;">@{{ faceText }}</div>
+                <div id="preview"><img :src="picUrl" v-show="picUrl" style="max-width: 750px;"></div>
             </div>
         </div>
     </div>
@@ -103,8 +113,11 @@
             data: {
                 form: null,
                 url: null,
+                picUrl: null,
                 text: null,
-                isUploading: false
+                isUploading: false,
+                faceText: null,
+                faceType: ''
             },
             methods: {
                 selectFile: function () {
@@ -125,6 +138,24 @@
                     this.isUploading = true;
                     $("#form").submit();
                 },
+                faceSelect: function () {
+                    if (!this.faceType) {
+                        return false;
+                    }
+                    this.isUploading = true;
+                    axios.post('/api/face', {url: this.url, faceType: this.faceType}).then(function (response) {
+                        var data = response.data;
+                        vm.picUrl = data.url;
+                        vm.faceText = data.text;
+                        vm.isUploading = false;
+                        if (vm.faceType == 'clothing') {
+                            window.open(vm.picUrl);
+                        }
+                    }).catch(function (error) {
+                        alert(error);
+                        vm.isUploading = false;
+                    });
+                }
             },
             mounted: function () {
                 new Clipboard('.clip');
@@ -133,7 +164,7 @@
                     axios.post('/api/upload', vm.form).then(function (response) {
                         var data = response.data;
                         if (data.code === 200) {
-                            vm.url = data.data;
+                            vm.url = vm.picUrl = data.data;
                         } else {
                             alert(data.data);
                         }

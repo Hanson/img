@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 
 
 Route::post('upload', 'UploadController@upload');
+
+Route::post('face', 'FaceController@index');
