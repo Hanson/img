@@ -44,7 +44,7 @@
                         <option value="poem">对图赋诗</option>
                     </select>
                 </form>
-                <div class="alert alert-success" role="alert" v-show="faceText" style="white-space: pre;">@{{ faceText }}</div>
+                <div class="alert alert-success" role="alert" v-show="faceText" style="white-space: pre; display: inline-block;">@{{ faceText }}</div>
                 <div id="preview"><img :src="picUrl" v-show="picUrl" style="max-width: 750px;"></div>
             </div>
         </div>
