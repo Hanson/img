@@ -161,6 +161,9 @@
                 new Clipboard('.clip');
                 $('#form').submit(function (e) {
                     vm.url = null;
+                    vm.picUrl = null;
+                    vm.faceText = null;
+                    vm.faceType = '';
                     axios.post('/api/upload', vm.form).then(function (response) {
                         var data = response.data;
                         if (data.code === 200) {
