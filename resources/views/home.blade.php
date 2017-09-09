@@ -142,6 +142,8 @@
                     if (!this.faceType) {
                         return false;
                     }
+                    vm.picUrl = null;
+                    vm.faceText = null;
                     this.isUploading = true;
                     axios.post('/api/face', {url: this.url, faceType: this.faceType}).then(function (response) {
                         var data = response.data;
